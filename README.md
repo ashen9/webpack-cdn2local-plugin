@@ -1,4 +1,4 @@
-# 99696
+# HOW TO USE
 
 ## Project setup
 ```

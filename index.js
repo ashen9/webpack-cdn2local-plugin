@@ -11,7 +11,7 @@ webpack_cdn2local_plugin.prototype.apply = function(compiler) {
   let that = this;
   compiler.plugin('emit', function(compilation,callback) {
     let text = compilation.assets['index.html'].source()
-    $ = cheerio.load(text);
+      $ = cheerio.load(text);
     $('[cdn = JSZXtrue]').each((e,i) => {
       let cdnUrl = ''
       let localPath = ''
