@@ -47,20 +47,23 @@ function toAsset(resp) {
   }
 }
 
-function download(url) {
-  return new Promise(function (resolve, reject) {
-    http.get('http:' + url, function(resp) {
-      if (resp.statusCode === 200) {
-        resp.on('data', function (data) {
-          resolve(data)
-        })
-      }
-      else {
-        reject(new Error('[webpack-example-plugin] Unable to download the image'));
-      }
-    });
-  })
+function download(url, compilation, cdnUrl) {
+	return new Promise(function (resolve, reject) {
+		http.get('http:' + url, function(resp) {
+			if (resp.statusCode === 200) {
+				let str = '';
+				resp.on('data', function (data) {
+					str += data.toString();
+				})
+				resp.on('end', function (data) {
+					resolve(str)
+				})
+			}
+			else {
+				reject(new Error('[webpack-example-plugin] Unable to download the image'));
+			}
+		});
+	})
 }
-
 
 module.exports = webpack_cdn2local_plugin;
