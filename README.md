@@ -1,3 +1,6 @@
+> webpack plugin for download some static resources to local.
+
+
 # HOW TO USE
 
 ## INSTALL
