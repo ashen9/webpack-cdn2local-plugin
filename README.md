@@ -1,4 +1,4 @@
-> webpack plugin for download some static resources to local.
+> webpack plugin for download some remotes static resources to local.
 
 
 # HOW TO USE
