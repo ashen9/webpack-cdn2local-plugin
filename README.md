@@ -1,8 +1,9 @@
 # HOW TO USE
 
-## Project setup
+## FIRST SETP
 ```
-npm install
+add 'cdn="JSZXtrue"' in the script you need to Pull down from remote CDN or other location
+```
 ```
 
 ### Compiles and hot-reloads for development
