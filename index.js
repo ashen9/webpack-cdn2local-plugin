@@ -4,54 +4,56 @@ let http = require('http');
 
 
 function webpack_cdn2local_plugin(options) {
-  this.cdnUrlList = []
+	this.cdnUrlList = [];
+	this.prefixPath = options.prefixPath || '/';
 }
 
 webpack_cdn2local_plugin.prototype.apply = function(compiler) {
-  let that = this;
-  var emit = function emit(compilation, callback) {
-	  let text = compilation.assets['index.html'].source()
-	  $ = cheerio.load(text);
-	  $('[cdn = JSZXtrue]').each((e,i) => {
-		  let cdnUrl = ''
-		  let localPath = ''
-		  if($(i).prop("tagName") === 'SCRIPT') {
-			  cdnUrl = $(i).attr('src')
-		  }else if ($(i).prop("tagName") === 'LINK') {
-			  cdnUrl = $(i).attr('href')
-		  }
-		  localPath = url.parse(cdnUrl).pathname.split('/').pop();
-		  that.cdnUrlList.push({cdnUrl, localPath})
-		  text = text.toString().replace(cdnUrl, './cdn/' + localPath);
-	  })
-	  compilation.assets['index.html'] = toAsset(text);
-	  Promise.all(that.cdnUrlList.map(function (cdnUrl) {
-		  return download(cdnUrl.cdnUrl)
-	  })).then(res => {
-		  res.forEach((data,i) => {
-			  compilation.assets[`cdn/${that.cdnUrlList[i].localPath}`] = toAsset(data);
-		  })
-		  callback()
-	  })
+	let that = this;
+	var emit = function emit(compilation, callback) {
+		let text = compilation.assets['index.html'].source()
+		$ = cheerio.load(text);
+		$('[cdn = JSZXtrue]').each((e,i) => {
+			let cdnUrl = ''
+			let localPath = ''
+			if($(i).prop("tagName") === 'SCRIPT') {
+				cdnUrl = $(i).attr('src')
+			}else if ($(i).prop("tagName") === 'LINK') {
+				cdnUrl = $(i).attr('href')
+			}
+			localPath = url.parse(cdnUrl).pathname.split('/').pop();
+			that.cdnUrlList.push({cdnUrl, localPath})
+			text = text.toString().replace(cdnUrl, `${that.prefixPath}cdn/`  + localPath);
+		})
+		console.log(`您的字库完整路径前缀是：${that.prefixPath}cdn/`);
+		compilation.assets['index.html'] = toAsset(text);
+		Promise.all(that.cdnUrlList.map(function (cdnUrl) {
+			return download(cdnUrl.cdnUrl)
+		})).then(res => {
+			res.forEach((data,i) => {
+				compilation.assets[`cdn/${that.cdnUrlList[i].localPath}`] = toAsset(data);
+			})
+			callback()
+		})
 	};
 
-  if (compiler.hooks) {
-  	var plugin = { name: 'Cdn2LocalPlugin' };
-  	compiler.hooks.emit.tapAsync(plugin, emit);
-  } else {
-  	compiler.plugin('emit', emit);
-  }
+	if (compiler.hooks) {
+		var plugin = { name: 'Cdn2LocalPlugin' };
+		compiler.hooks.emit.tapAsync(plugin, emit);
+	} else {
+		compiler.plugin('emit', emit);
+	}
 };
 
 function toAsset(resp) {
-  return {
-    source: function() {
-      return resp;
-    },
-    size: function() {
-      return resp.length;
-    }
-  }
+	return {
+		source: function() {
+			return resp;
+		},
+		size: function() {
+			return resp.length;
+		}
+	}
 }
 
 function download(url, compilation, cdnUrl) {

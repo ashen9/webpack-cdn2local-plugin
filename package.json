@@ -1,6 +1,6 @@
 {
   "name": "webpack-cdn2local-plugin",
-  "version": "1.0.4",
+  "version": "1.1.0-beta",
   "description": "",
   "main": "index.js",
   "scripts": {
