@@ -13,7 +13,7 @@ webpack_cdn2local_plugin.prototype.apply = function(compiler) {
 	var emit = function emit(compilation, callback) {
 		let text = compilation.assets['index.html'].source()
 		$ = cheerio.load(text);
-		$('[cdn = JSZXtrue]').each((e,i) => {
+		$('[cdn2local]').each((e,i) => {
 			let cdnUrl = ''
 			let localPath = ''
 			if($(i).prop("tagName") === 'SCRIPT') {
