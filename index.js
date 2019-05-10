@@ -22,7 +22,7 @@ webpack_cdn2local_plugin.prototype.apply = function(compiler) {
 		  }
 		  localPath = url.parse(cdnUrl).pathname.split('/').pop();
 		  that.cdnUrlList.push({cdnUrl, localPath})
-		  text = text.toString().replace(cdnUrl, '/cdn/' + localPath);
+		  text = text.toString().replace(cdnUrl, './cdn/' + localPath);
 	  })
 	  compilation.assets['index.html'] = toAsset(text);
 	  Promise.all(that.cdnUrlList.map(function (cdnUrl) {
