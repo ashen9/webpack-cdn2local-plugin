@@ -1,6 +1,6 @@
 {
   "name": "webpack-cdn2local-plugin",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,9 @@
     "webpack", "plugin", "cdn", "reptile", "resource"
   ],
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2"
+    "cheerio": "^1.0.0-rc.2",
+    "uglifuy-js": "^3.6.0",
+    "uglifycss": "0.0.29"
   },
   "author": "Zhangdongliang",
   "license": "MIT"
