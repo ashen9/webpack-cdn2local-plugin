@@ -1,6 +1,6 @@
 {
   "name": "webpack-cdn2local-plugin",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,6 @@
   ],
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "uglifuy-js": "^3.6.0",
     "uglifycss": "0.0.29"
   },
   "author": "Zhangdongliang",
