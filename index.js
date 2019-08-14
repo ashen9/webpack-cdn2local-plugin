@@ -1,5 +1,6 @@
 var cheerio = require('cheerio');
 let url = require('url');
+let https = require('https');
 let http = require('http');
 var uglifycss = require('uglifycss');
 function webpack_cdn2local_plugin (options) {
@@ -24,8 +25,9 @@ webpack_cdn2local_plugin.prototype.apply = function (compiler) {
 			that.cdnUrlList.push({cdnUrl, localPath});
 			text = text.toString().replace(cdnUrl, `${that.prefixPath}cdn/` + localPath);
 		});
-		console.log(`您的字库完整路径前缀是：${that.prefixPath}cdn/`);
+		console.log(`您的cdn完整路径前缀是：${that.prefixPath}cdn/`);
 		compilation.assets['index.html'] = toAsset(text);
+		console.log(that.cdnUrlList);
 		Promise.all(that.cdnUrlList.map(function (cdnUrl) {
 			return download(cdnUrl.cdnUrl);
 		})).then(res => {
@@ -58,9 +60,10 @@ function toAsset (resp, fileExt) {
 	};
 }
 
-function download (url, compilation, cdnUrl) {
+function download (url) {
 	return new Promise(function (resolve, reject) {
-		http.get('http:' + url, function (resp) {
+		const agency = url.includes('https')? https : http;
+		agency.get(url, function (resp) {
 			if (resp.statusCode === 200) {
 				let str = '';
 				resp.on('data', function (data) {
