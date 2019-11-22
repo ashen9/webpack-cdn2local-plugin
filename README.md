@@ -22,7 +22,7 @@ EXAMPLE:
     const Cdn2Local = require('webpack-cdn2local-plugin');
     plugins:[
         ...,
-        new Cdn2Local()
+        new Cdn2Local({prefixPath： '/'})
      ]
 ```
 
